@@ -95,6 +95,7 @@ public class MenuServiceImpl implements MenuService{
         Menu menu = (Menu) this.menuDtoToMenu.map(menuDto);
         Menu menuAux = null;
         Menu menuAux1 = null;
+        System.out.println("estoy antes de buscar el menu");
         try {
             menuAux = this.menuRepository.findById(id).orElse(null);
         }catch (DataAccessException exception){
@@ -105,13 +106,20 @@ public class MenuServiceImpl implements MenuService{
             response.put("Message", "This menu is not in the DataBase");
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
+
+        if(menu.getCategory() != null){
+           if(menuAux.getSubmenuList().size()>0){
+               response.put("Message","Este menu ya posee Submenus Asociados");
+               return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+           }
+        }
         menuAux.setName(menu.getName());
         menuAux.setCategory(menu.getCategory());
-        menuAux.setSubmenuList(menu.getSubmenuList());
+        //menuAux.setSubmenuList(menu.getSubmenuList());
 
         menuAux1 = this.menuRepository.save(menuAux);
         response.put("Message", "Menu update Successfully");
-        response.put("Message", menuAux1);
+        response.put("Menu", menuAux1);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
