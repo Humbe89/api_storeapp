@@ -190,4 +190,29 @@ public class ProductServiceImpl implements ProductService{
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @Override
+    public List<Product> findByNameContaining(String name) {
+        return this.productRepository.findByNameContaining(name);
+    }
+
+    @Override
+    public List<Product> findByNameIsContaining(String name) {
+        return this.productRepository.findByNameIsContaining(name);
+    }
+
+    @Override
+    public List<Product> findByNameContains(String name) {
+        return this.productRepository.findByNameContains(name);
+    }
+
+    @Override
+    public List<Product> findByNameLike(String title) {
+        return this.productRepository.findByNameLike(title);
+    }
+
+    @Override
+    public List<Product> searchByTitleLike(String title) {
+        return this.productRepository.searchByTitleLike(title);
+    }
 }

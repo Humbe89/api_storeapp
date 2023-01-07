@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -89,6 +90,46 @@ public class ProductController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"");
         return new ResponseEntity<Resource>(resource,httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/containing/{name}")
+    public ResponseEntity<?> findAllByNameContaining(@PathVariable(name = "name")String name){
+        List<Product> productList = this.productService.findByNameContaining(name);
+        return  new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+    /*
+    * Esto es un metodo de prueba para verificar que me devuelve lo mismo
+    * el Iscontaining que el containing de JPA
+    * */
+    @GetMapping("/products/iscontaining/{name}")
+    public ResponseEntity<?> findAllByNameIsContaining(@PathVariable(name = "name")String name){
+        List<Product> productList = this.productService.findByNameIsContaining(name);
+        return  new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+    /*
+     * Esto es un metodo de prueba para verificar que me devuelve lo mismo
+     * el contains que el containing de JPA
+     * */
+    @GetMapping("/products/contains/{name}")
+    public ResponseEntity<?> findAllByNameContains(@PathVariable(name = "name")String name){
+        List<Product> productList = this.productService.findByNameContains(name);
+        return  new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/like/{name}")
+    public ResponseEntity<?> findAllByNameLike(@PathVariable(name = "name")String name){
+        List<Product> productList = this.productService.findByNameLike(name);
+        return  new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+/*
+*  Ejemplo usando una query nativa
+* */
+    @GetMapping("/products/query/{name}")
+    public ResponseEntity<?> findAllByNameQuery(@PathVariable(name = "name")String name){
+        List<Product> productList = this.productService.searchByTitleLike(name);
+        return  new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
 
